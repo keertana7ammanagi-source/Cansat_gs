@@ -1,0 +1,21 @@
+# User settings – override defaults
+serial:
+  baud_rate: 115200
+  default_port: ""
+
+lora:
+  frequency: 915000000
+  sync_word: 0x12
+
+logging:
+  level: "INFO"
+  file: "logs/ground_station.log"
+
+ui:
+  theme: "dark"
+  graph_buffer_size: 300
+
+paths:
+  data: "data/"
+  images: "data/images/"
+  flights: "data/flights/"
