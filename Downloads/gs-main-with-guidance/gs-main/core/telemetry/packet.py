@@ -1,16 +1,24 @@
-import sys, os
+"""
+CAN-7USAT Telemetry Packet Parser
+Parses 32-field comma-separated telemetry and adds legacy aliases.
+"""
+import sys
+import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from dataclasses import dataclass
-from typing import Optional
-
-from core.telemetry.constants import FIELD_NAMES, FLOAT_FIELDS, INT_FIELDS, TEAM_ID
+from core.telemetry.constants import (
+    FIELD_NAMES, FLOAT_FIELDS, INT_FIELDS, TEAM_ID,
+    FIELD_ALIASES, FLIGHT_STATES,
+)
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+
 class PacketParseError(Exception):
     pass
+
 
 @dataclass
 class TelemetryPacket:
@@ -21,17 +29,26 @@ class TelemetryPacket:
         return self.fields.get(name, default)
 
     def __getattr__(self, name):
-        if name in self.fields:
-            return self.fields[name]
+        if name.startswith("_") or name in ("fields", "raw_line"):
+            raise AttributeError(name)
+        fields = self.__dict__.get("fields", {})
+        if name in fields:
+            return fields[name]
         raise AttributeError(name)
 
+
 def parse_packet(line: str) -> TelemetryPacket:
+    """Parse a raw telemetry line into a 32-field dictionary."""
     raw = line.strip()
+    if not raw:
+        raise PacketParseError("Empty line")
+
     parts = [p.strip() for p in raw.split(",")]
 
     if len(parts) != len(FIELD_NAMES):
-        logger.warning(f"Field count mismatch: expected {len(FIELD_NAMES)}, got {len(parts)}")
-        raise PacketParseError(f"Expected {len(FIELD_NAMES)} fields, got {len(parts)}")
+        raise PacketParseError(
+            f"Expected {len(FIELD_NAMES)} fields, got {len(parts)}"
+        )
 
     fields = {}
     for name, value in zip(FIELD_NAMES, parts):
@@ -48,9 +65,27 @@ def parse_packet(line: str) -> TelemetryPacket:
         else:
             fields[name] = value
 
-    if fields["TEAM_ID"] != TEAM_ID:
-        raise PacketParseError(f"TEAM_ID mismatch: {fields['TEAM_ID']!r} vs {TEAM_ID!r}")
+    # Validate team ID
+    if fields.get("TEAM_ID") != TEAM_ID:
+        raise PacketParseError(f"TEAM_ID mismatch: {fields['TEAM_ID']!r}")
 
     return TelemetryPacket(raw_line=raw, fields=fields)
 
-# Move PacketSequencer here or keep in separate file.
+
+def add_legacy_aliases(packet: TelemetryPacket) -> TelemetryPacket:
+    """Add legacy key names and human-readable state name for old dashboards."""
+    for old_key, new_key in FIELD_ALIASES.items():
+        if new_key in packet.fields and old_key not in packet.fields:
+            packet.fields[old_key] = packet.fields[new_key]
+
+    # Human-readable flight state name
+    state_num = packet.fields.get("FLIGHT_SOFTWARE_STATE")
+    if state_num is not None:
+        try:
+            packet.fields["FLIGHT_STATE_NAME"] = FLIGHT_STATES.get(
+                int(state_num), f"STATE_{state_num}"
+            )
+        except (ValueError, TypeError):
+            packet.fields["FLIGHT_STATE_NAME"] = str(state_num)
+
+    return packet

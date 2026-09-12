@@ -1,8 +1,7 @@
 """
-CSV Logger – writes telemetry packets to a CSV file.
+CSV Logger — writes 32-column telemetry to Flight_<TEAM_ID>.csv
 """
 import csv
-import os
 from pathlib import Path
 
 from config.config_loader import Config
@@ -16,13 +15,10 @@ class CSVLogger:
     def __init__(self, filepath: str = None):
         cfg = Config()
         if filepath is None:
-            # Build path: data/flights/Flight_<TEAM_ID>.csv
             base = cfg.get('paths.flights', 'data/flights/')
-            filename = f"Flight_{TEAM_ID}.csv"
-            filepath = str(Path(base) / filename)
+            filepath = str(Path(base) / f"Flight_{TEAM_ID}.csv")
 
         self.filepath = Path(filepath)
-        # Ensure directory exists
         self.filepath.parent.mkdir(parents=True, exist_ok=True)
 
         is_new = not self.filepath.exists()
@@ -32,10 +28,10 @@ class CSVLogger:
         if is_new:
             self._writer.writerow(FIELD_NAMES)
             self._file.flush()
-            logger.info(f"CSV log created: {self.filepath}")
+            logger.info(f"CSV created: {self.filepath} ({len(FIELD_NAMES)} columns)")
 
     def log(self, packet):
-        """Write a TelemetryPacket to the CSV."""
+        """Write a TelemetryPacket row (32 columns)."""
         try:
             row = [packet.fields.get(name, '') for name in FIELD_NAMES]
             self._writer.writerow(row)
@@ -46,4 +42,4 @@ class CSVLogger:
     def close(self):
         if self._file and not self._file.closed:
             self._file.close()
-            logger.debug("CSV file closed.")
+            logger.debug("CSV closed.")

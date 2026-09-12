@@ -14,7 +14,7 @@ from config.config_loader import Config
 from core.telemetry.constants import (
     TEAM_ID, CMD_TELEMETRY_ON, CMD_TELEMETRY_OFF, CMD_CALIBRATE
 )
-from core.telemetry.packet import parse_packet, PacketParseError
+from core.telemetry.packet import parse_packet, add_legacy_aliases, PacketParseError
 from core.telemetry.packet_sequencer import PacketSequencer
 from core.data.csv_logger import CSVLogger
 from core.data.image_archive import ImageArchive
@@ -428,7 +428,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _handle_line(self, line):
         try:
-            packet = parse_packet(line)
+            packet = add_legacy_aliases(parse_packet(line))
         except PacketParseError as e:
             self.bottom_status.setText(f"Parse error: {e}")
             logger.warning(f"Parse error: {e}")
