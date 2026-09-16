@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_ee9fbc156d19f895dd7f78aaadf9c7b5 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_ee9fbc156d19f895dd7f78aaadf9c7b5" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_ee9fbc156d19f895dd7f78aaadf9c7b5 = L.map(
+                "map_ee9fbc156d19f895dd7f78aaadf9c7b5",
+                {
+                    center: [28.6129, 77.2295],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 15,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_cf5c01f008ac0d9bd8bef9116a2fa32e = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_cf5c01f008ac0d9bd8bef9116a2fa32e.addTo(map_ee9fbc156d19f895dd7f78aaadf9c7b5);
+        
+    
+            var marker_717d82a5a7b8ec8058a41e0977a4bd8a = L.marker(
+                [28.6129, 77.2295],
+                {
+}
+            ).addTo(map_ee9fbc156d19f895dd7f78aaadf9c7b5);
+        
+    
+            var icon_650f4e1486dde8ead562661b5a6291a3 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_ae753eeb0b49a4b97b2096ad8849e407 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_3f59f4f10e487f936a848b0639ec2d1f = $(`<div id="html_3f59f4f10e487f936a848b0639ec2d1f" style="width: 100.0%; height: 100.0%;">Current Position</div>`)[0];
+                popup_ae753eeb0b49a4b97b2096ad8849e407.setContent(html_3f59f4f10e487f936a848b0639ec2d1f);
+            
+        
+
+        marker_717d82a5a7b8ec8058a41e0977a4bd8a.bindPopup(popup_ae753eeb0b49a4b97b2096ad8849e407)
+        ;
+
+        
+    
+    
+                marker_717d82a5a7b8ec8058a41e0977a4bd8a.setIcon(icon_650f4e1486dde8ead562661b5a6291a3);
+            
+</script>
+</html>

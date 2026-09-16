@@ -6,6 +6,13 @@ CAN-7USAT Telemetry Field Definitions
 TEAM_ID = "2026-INSPACe-CAN-7USAT-036"
 
 # ============================================================
+# TELEMETRY COMMAND CONSTANTS (Rule 6.1.ii, 6.1.v, 6.1.vi)
+# ============================================================
+CMD_TELEMETRY_ON  = "CXON"      # Start telemetry transmission
+CMD_TELEMETRY_OFF = "CXOFF"     # Stop telemetry transmission
+CMD_CALIBRATE     = "CAL_ALL"   # Calibrate all sensors on pad
+
+# ============================================================
 # THE 32 FIELDS — ORDER MATTERS (matches ESP32 transmitter)
 # ============================================================
 FIELD_NAMES = [
@@ -48,9 +55,6 @@ FIELD_NAMES = [
     "CAM_A_STATUS",           # 32 ESP32-CAM A
 ]
 
-# ============================================================
-# TYPE HINTS FOR PARSER
-# ============================================================
 FLOAT_FIELDS = {
     "TIME_STAMPING", "ALTITUDE", "PRESSURE", "TEMP", "VOLTAGE",
     "GNSS_LATITUDE", "GNSS_LONGITUDE", "GNSS_ALTITUDE", "GYRO_SPIN_RATE",
@@ -63,34 +67,27 @@ INT_FIELDS = {
     "LUX", "CAM_A_STATUS", "DWELL_MS",
 }
 
-# ============================================================
-# LEGACY ALIASES — old dashboards use these names
-# ============================================================
 FIELD_ALIASES = {
-    # Old name             →  New name
-    "MISSION_TIME":           "TIME_STAMPING",
-    "STATE":                  "FLIGHT_SOFTWARE_STATE",
-    "FLIGHT_STATE":           "FLIGHT_SOFTWARE_STATE",
-    "TEMPERATURE":            "TEMP",
-    "GPS_TIME":               "GNSS_TIME",
-    "GPS_LATITUDE":           "GNSS_LATITUDE",
-    "GPS_LONGITUDE":          "GNSS_LONGITUDE",
-    "GPS_ALTITUDE":           "GNSS_ALTITUDE",
-    "GPS_SATS":               "GNSS_SATS",
-    "I":                      "CURRENT",
-    "P":                      "POWER",
-    "CAM_A":                  "CAM_A_STATUS",
-    "ERR":                    "CROSS_ERROR",
-    "ERR_N":                  "ERROR_NORTH",
-    "ERR_E":                  "ERROR_EAST",
-    "PETAL":                  "PETAL_STATE",
-    "CMD":                    "GLIDE_CMD",
-    "DWELL":                  "DWELL_MS",
+    "MISSION_TIME":  "TIME_STAMPING",
+    "STATE":         "FLIGHT_SOFTWARE_STATE",
+    "FLIGHT_STATE":  "FLIGHT_SOFTWARE_STATE",
+    "TEMPERATURE":   "TEMP",
+    "GPS_TIME":      "GNSS_TIME",
+    "GPS_LATITUDE":  "GNSS_LATITUDE",
+    "GPS_LONGITUDE": "GNSS_LONGITUDE",
+    "GPS_ALTITUDE":  "GNSS_ALTITUDE",
+    "GPS_SATS":      "GNSS_SATS",
+    "I":             "CURRENT",
+    "P":             "POWER",
+    "CAM_A":         "CAM_A_STATUS",
+    "ERR":           "CROSS_ERROR",
+    "ERR_N":         "ERROR_NORTH",
+    "ERR_E":         "ERROR_EAST",
+    "PETAL":         "PETAL_STATE",
+    "CMD":           "GLIDE_CMD",
+    "DWELL":         "DWELL_MS",
 }
 
-# ============================================================
-# FLIGHT STATE NAMES
-# ============================================================
 FLIGHT_STATES = {
     0: "BOOT",
     1: "TEST_MODE",
