@@ -1,7 +1,6 @@
 from .base_dashboard import BaseDashboard
 from .telemetry_dashboard import TelemetryDashboard
 from .power_dashboard import PowerDashboard
-from .camera_dashboard import CameraDashboard
 from .recovery_dashboard import RecoveryDashboard
 from .flight_dashboard import FlightDashboard
 from .sensor_dashboard import SensorDashboard

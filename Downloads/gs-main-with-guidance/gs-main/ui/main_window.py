@@ -35,7 +35,6 @@ from guidance.wind_estimator import WindEstimator as GuidanceWindEstimator
 from ui.dashboards import (
     TelemetryDashboard,
     PowerDashboard,
-    CameraDashboard,
     RecoveryDashboard,
     FlightDashboard,
     SensorDashboard,
@@ -211,10 +210,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.poll_timer.timeout.connect(self._poll_serial)
         self.poll_timer.start(100)
 
-        # Camera refresh timer
-        self.cam_timer = QtCore.QTimer()
-        self.cam_timer.timeout.connect(self._refresh_camera_feeds)
-        self.cam_timer.start(5000)
 
         logger.info("MainWindow initialized.")
 
@@ -271,7 +266,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.mission_dashboard = MissionDashboard()
         self.telemetry_dashboard = TelemetryDashboard(buffer_size=self.buffer_size)
         self.power_dashboard = PowerDashboard(buffer_size=self.buffer_size)
-        self.camera_dashboard = CameraDashboard(image_archive=self.image_archive)
         self.recovery_dashboard = RecoveryDashboard()
         self.flight_dashboard = FlightDashboard()
         self.sensor_dashboard = SensorDashboard()
@@ -288,7 +282,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabs.addTab(wrap_with_scroll(self.mission_dashboard), "Mission")
         self.tabs.addTab(wrap_with_scroll(self.telemetry_dashboard), "Telemetry")
         self.tabs.addTab(wrap_with_scroll(self.power_dashboard), "Power")
-        self.tabs.addTab(wrap_with_scroll(self.camera_dashboard), "Camera")
         self.tabs.addTab(wrap_with_scroll(self.recovery_dashboard), "Recovery")
         self.tabs.addTab(wrap_with_scroll(self.flight_dashboard), "Flight")
         self.tabs.addTab(wrap_with_scroll(self.sensor_dashboard), "Sensors")
@@ -561,10 +554,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 f"(xtrack={result['cross_track_m']:.1f}m, {result['reason']})"
             )
 
-    # ---------- Camera Refresh ----------
-    def _refresh_camera_feeds(self):
-        if hasattr(self, 'camera_dashboard'):
-            self.camera_dashboard.refresh_images(self.image_archive)
 
     # ---------- Report Generation (UPDATED) ----------
     def _generate_report(self):
@@ -619,7 +608,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 f"Contents:\n"
                 f"  - PDF report\n"
                 f"  - Full CSV data\n"
-                f"  - Sample images from both cameras\n"
                 f"  - Video file (if available)\n"
                 f"  - README.txt"
             )
