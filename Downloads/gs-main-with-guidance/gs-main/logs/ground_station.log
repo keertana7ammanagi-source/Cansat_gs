@@ -4,3 +4,14 @@
 2026-09-21 09:21:07 - core.ai.trend_predictor - INFO - Loaded pre-trained trend model (pressure).
 2026-09-21 09:21:08 - ui.main_window - INFO - MainWindow initialized.
 2026-09-21 09:31:13 - ui.main_window - INFO - Application closed.
+2026-09-21 11:11:35 - root - INFO - Logging initialized. Log file: logs/ground_station.log
+2026-09-21 11:11:35 - root - INFO - Directories verified/created.
+2026-09-21 11:11:35 - core.ai.fingerprint - INFO - Loaded pre-trained fingerprint models.
+2026-09-21 11:11:35 - core.ai.trend_predictor - INFO - Loaded pre-trained trend model (pressure).
+2026-09-21 11:11:38 - ui.main_window - INFO - MainWindow initialized.
+2026-09-21 11:22:37 - ui.commands.command_panel - INFO - Command sent: RESET_GPS
+2026-09-21 11:22:41 - ui.commands.command_panel - INFO - Command sent: CXON
+2026-09-21 11:22:44 - ui.commands.command_panel - INFO - Command sent: CAL_IMU
+2026-09-21 11:22:49 - ui.commands.command_panel - INFO - Command sent: BEACON_ON
+2026-09-21 11:22:52 - ui.commands.command_panel - INFO - Command sent: RESET_TIME
+2026-09-21 11:27:02 - ui.main_window - INFO - Application closed.
