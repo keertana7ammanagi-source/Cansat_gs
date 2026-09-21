@@ -43,7 +43,7 @@ from ui.dashboards import (
 )
 
 # Graph Engine
-from ui.graphs import GraphEngine
+from ui.graphs import GraphEngine, MultiFieldGraphGrid
 
 # Command Panel
 from ui.commands import CommandPanel
@@ -270,6 +270,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.flight_dashboard = FlightDashboard()
         self.sensor_dashboard = SensorDashboard()
         self.graph_engine = GraphEngine(buffer_size=self.buffer_size)
+        self.multi_field_grid = MultiFieldGraphGrid(buffer_size=self.buffer_size)
         self.guidance_dashboard = GuidanceDashboard()
 
         # Command panel (pass send_command callback)
@@ -286,6 +287,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabs.addTab(wrap_with_scroll(self.flight_dashboard), "Flight")
         self.tabs.addTab(wrap_with_scroll(self.sensor_dashboard), "Sensors")
         self.tabs.addTab(wrap_with_scroll(self.graph_engine), "Graphs")
+        self.tabs.addTab(wrap_with_scroll(self.multi_field_grid), "All Fields")
         self.tabs.addTab(wrap_with_scroll(self.guidance_dashboard), "Guidance")
         self.tabs.addTab(wrap_with_scroll(self.command_panel), "Commands")
         self.tabs.addTab(wrap_with_scroll(self.simulation_tab), "Simulation")
@@ -437,6 +439,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.flight_dashboard.update(packet)
         self.sensor_dashboard.update(packet)
         self.graph_engine.update(packet)
+        self.multi_field_grid.update(packet)
 
         # Update AI
         self._update_ai(packet)
