@@ -1,6 +1,8 @@
 """
 CAN-7USAT Telemetry Field Definitions
-32 flat fields — all comma-separated, no sub-fields.
+24 flat fields — all comma-separated, no sub-fields
+(ACCELEROMETER_DATA is the one exception: it is a single CSV field that
+internally packs "ax;ay;az" — see core/telemetry/packet.py for the split).
 """
 
 TEAM_ID = "2026-INSPACe-CAN-7USAT-036"
@@ -10,62 +12,54 @@ TEAM_ID = "2026-INSPACe-CAN-7USAT-036"
 # ============================================================
 CMD_TELEMETRY_ON  = "CXON"      # Start telemetry transmission
 CMD_TELEMETRY_OFF = "CXOFF"     # Stop telemetry transmission
-CMD_CALIBRATE     = "CAL_ALL"   # Calibrate all sensors on pad
+CMD_CALIBRATE     = "CAL"       # Calibrate all sensors on pad (matches firmware's handleCommand)
 
 # ============================================================
-# THE 32 FIELDS — ORDER MATTERS (matches ESP32 transmitter)
+# THE 24 FIELDS — ORDER MATTERS (matches the flight transmitter)
 # ============================================================
 FIELD_NAMES = [
     # --- Mandatory IN-SPACe (15) ---
     "TEAM_ID",                # 1
-    "TIME_STAMPING",          # 2
+    "TIME_STAMPING",          # 2  mission elapsed time, seconds
     "PACKET_COUNT",           # 3
-    "ALTITUDE",               # 4
-    "PRESSURE",               # 5
-    "TEMP",                   # 6  (from SHT40)
-    "VOLTAGE",                # 7
-    "GNSS_TIME",              # 8
-    "GNSS_LATITUDE",          # 9
-    "GNSS_LONGITUDE",         # 10
-    "GNSS_ALTITUDE",          # 11
-    "GNSS_SATS",              # 12
-    "ACCELEROMETER_DATA",     # 13 (ax;ay;az)
-    "GYRO_SPIN_RATE",         # 14 (Hall sensor, deg/s)
-    "FLIGHT_SOFTWARE_STATE",  # 15 (0-7)
-
-    # --- Precision Landing (8) ---
-    "PRED_LAT",               # 16
-    "PRED_LON",               # 17
-    "CROSS_ERROR",            # 18
-    "ERROR_NORTH",            # 19
-    "ERROR_EAST",             # 20
-    "PETAL_STATE",            # 21
-    "GLIDE_CMD",              # 22
-    "DWELL_MS",               # 23
+    "ALTITUDE",               # 4  meters, relative to ground
+    "PRESSURE",               # 5  pascals
+    "TEMP",                   # 6  deg C (SHT40)
+    "VOLTAGE",                # 7  volts
+    "GNSS_TIME",              # 8  time from GNSS receiver (HH:MM:SS)
+    "GNSS_LATITUDE",          # 9  degrees
+    "GNSS_LONGITUDE",         # 10 degrees
+    "GNSS_ALTITUDE",          # 11 meters
+    "GNSS_SATS",              # 12 satellite count
+    "ACCELEROMETER_DATA",     # 13 packed "ax;ay;az" (m/s^2)
+    "GYRO_SPIN_RATE",         # 14 deg/s (Hall sensor)
+    "FLIGHT_SOFTWARE_STATE",  # 15 0-7
 
     # --- Sensor Data (9) ---
-    "HUM",                    # 24 SHT40
-    "UV",                     # 25 LTR390
-    "LUX",                    # 26 LTR390
-    "CURRENT",                # 27 INA219
-    "POWER",                  # 28 INA219
-    "ROLL",                   # 29 BNO085
-    "PITCH",                  # 30 BNO085
-    "YAW",                    # 31 BNO085
-    "CAM_A_STATUS",           # 32 ESP32-CAM A
+    "HUM",                    # 16 SHT40, % RH
+    "UV",                     # 17 LTR390
+    "LUX",                    # 18 LTR390
+    "CURRENT",                # 19 INA219, mA
+    "POWER",                  # 20 INA219, mW
+    "ROLL",                   # 21 BNO085, deg
+    "PITCH",                  # 22 BNO085, deg
+    "YAW",                    # 23 BNO085, deg
+    "CAM_A_STATUS",           # 24 ESP32-CAM A (0/1)
 ]
 
 FLOAT_FIELDS = {
     "TIME_STAMPING", "ALTITUDE", "PRESSURE", "TEMP", "VOLTAGE",
     "GNSS_LATITUDE", "GNSS_LONGITUDE", "GNSS_ALTITUDE", "GYRO_SPIN_RATE",
-    "PRED_LAT", "PRED_LON", "CROSS_ERROR", "ERROR_NORTH", "ERROR_EAST",
     "HUM", "UV", "CURRENT", "POWER", "ROLL", "PITCH", "YAW",
 }
 
 INT_FIELDS = {
     "PACKET_COUNT", "GNSS_SATS", "FLIGHT_SOFTWARE_STATE",
-    "LUX", "CAM_A_STATUS", "DWELL_MS",
+    "LUX", "CAM_A_STATUS",
 }
+
+# ACCELEROMETER_DATA and GNSS_TIME are intentionally left as plain strings
+# (ACCELEROMETER_DATA is unpacked separately by add_legacy_aliases()).
 
 FIELD_ALIASES = {
     "MISSION_TIME":  "TIME_STAMPING",
@@ -80,12 +74,6 @@ FIELD_ALIASES = {
     "I":             "CURRENT",
     "P":             "POWER",
     "CAM_A":         "CAM_A_STATUS",
-    "ERR":           "CROSS_ERROR",
-    "ERR_N":         "ERROR_NORTH",
-    "ERR_E":         "ERROR_EAST",
-    "PETAL":         "PETAL_STATE",
-    "CMD":           "GLIDE_CMD",
-    "DWELL":         "DWELL_MS",
 }
 
 FLIGHT_STATES = {
