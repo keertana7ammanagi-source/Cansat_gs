@@ -38,7 +38,7 @@ class TelemetryDashboard(BaseDashboard):
         fields = [
             ("Altitude", "ALTITUDE", "m", 0),
             ("Vertical Velocity", "VELOCITY", "m/s", 1),
-            ("Pressure", "PRESSURE", "hPa", 2),
+            ("Pressure", "PRESSURE", "Pa", 2),
             ("Temperature", "TEMP", "°C", 3),
             ("Humidity", "HUMIDITY", "%", 4),
             ("Current", "CURRENT", "A", 5),
