@@ -41,3 +41,26 @@
 2026-09-21 15:16:35 - core.ai.trend_predictor - INFO - Loaded pre-trained trend model (pressure).
 2026-09-21 15:16:36 - ui.main_window - INFO - MainWindow initialized.
 2026-09-21 15:21:55 - ui.main_window - INFO - Application closed.
+2026-09-21 15:26:54 - root - INFO - Logging initialized. Log file: logs/ground_station.log
+2026-09-21 15:26:54 - root - INFO - Directories verified/created.
+2026-09-21 15:26:54 - core.ai.fingerprint - INFO - Loaded pre-trained fingerprint models.
+2026-09-21 15:26:54 - core.ai.trend_predictor - INFO - Loaded pre-trained trend model (pressure).
+2026-09-21 15:26:55 - ui.main_window - INFO - MainWindow initialized.
+2026-09-21 15:27:23 - ui.main_window - INFO - Application closed.
+2026-09-21 15:39:56 - root - INFO - Logging initialized. Log file: logs/ground_station.log
+2026-09-21 15:39:56 - root - INFO - Directories verified/created.
+2026-09-21 15:39:56 - core.ai.fingerprint - INFO - Loaded pre-trained fingerprint models.
+2026-09-21 15:39:56 - core.ai.trend_predictor - INFO - Loaded pre-trained trend model (pressure).
+2026-09-21 15:39:57 - ui.main_window - INFO - MainWindow initialized.
+2026-09-21 15:52:18 - core.hardware.serial_link - INFO - Serial connected: COM5 @ 115200 baud
+2026-09-21 15:52:18 - ui.main_window - INFO - Connected to COM5
+2026-09-21 15:52:20 - ui.main_window - INFO - Command sent: CXON
+2026-09-21 16:09:53 - core.hardware.serial_link - ERROR - Serial read error: ClearCommError failed (PermissionError(13, 'The device does not recognize the command.', None, 22))
+2026-09-21 19:54:17 - core.hardware.serial_link - INFO - Serial disconnected: COM5
+2026-09-21 19:54:17 - ui.main_window - INFO - Application closed.
+2026-09-22 14:55:55 - root - INFO - Logging initialized. Log file: logs/ground_station.log
+2026-09-22 14:55:55 - root - INFO - Directories verified/created.
+2026-09-22 14:55:56 - core.ai.fingerprint - INFO - Loaded pre-trained fingerprint models.
+2026-09-22 14:55:56 - core.ai.trend_predictor - INFO - Loaded pre-trained trend model (pressure).
+2026-09-22 14:56:00 - ui.main_window - INFO - MainWindow initialized.
+2026-09-22 14:56:49 - ui.main_window - INFO - Application closed.

@@ -416,8 +416,25 @@ class MainWindow(QtWidgets.QMainWindow):
             QtWidgets.QMessageBox.warning(self, "Not connected", "Connect to the ground station first.")
 
     def _poll_serial(self):
-        if not self.serial_link or not self.serial_link.is_connected():
+        if not self.serial_link:
             return
+
+        if self.serial_link.is_link_broken():
+            # Reader thread died from a real I/O error (e.g. USB cable/
+            # receiver physically disconnected), not just a quiet RF link.
+            # Distinct from "no telemetry yet" so the operator knows to
+            # physically check the connection, not just wait.
+            self.status_label.setText("STATUS: LINK LOST")
+            self.status_label.setStyleSheet("color: #e06050; font-weight: bold; font-size: 16px;")
+            self.connect_btn.setText("Connect")
+            self.serial_link.disconnect()
+            self.serial_link = None
+            logger.error("Serial link lost (unexpected I/O error) -- check USB connection.")
+            return
+
+        if not self.serial_link.is_connected():
+            return
+
         for line in self.serial_link.read_available_lines():
             self._handle_line(line)
 
@@ -430,6 +447,17 @@ class MainWindow(QtWidgets.QMainWindow):
             return
 
         self.csv_logger.log(packet)
+
+        seq_result = self.sequencer.process(packet)
+        if seq_result["missed"]:
+            self.bottom_status.setText(
+                f"⚠ {seq_result['missed']} packet(s) lost before #{packet.get('PACKET_COUNT', '?')}"
+            )
+            logger.warning(f"Packet loss detected: {seq_result['missed']} missed")
+        elif seq_result["duplicate"]:
+            logger.warning(f"Duplicate packet #{packet.get('PACKET_COUNT', '?')} received")
+        elif seq_result["out_of_order"]:
+            logger.warning(f"Out-of-order packet #{packet.get('PACKET_COUNT', '?')} received")
 
         # Forward packet to all dashboards
         self.mission_dashboard.update(packet)
@@ -447,7 +475,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # Update guidance (precision landing)
         self._update_guidance(packet)
 
-        self.bottom_status.setText(f"Packet #{packet.get('PACKET_COUNT', '?')}")
+        if not (seq_result["missed"] or seq_result["duplicate"] or seq_result["out_of_order"]):
+            self.bottom_status.setText(f"Packet #{packet.get('PACKET_COUNT', '?')}")
 
     def _inject_packet(self, raw_line):
         """
