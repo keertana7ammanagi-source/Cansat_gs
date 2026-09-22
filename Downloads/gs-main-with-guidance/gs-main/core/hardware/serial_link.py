@@ -1,5 +1,5 @@
 """
-Hardware Abstraction Layer – Serial I/O (non-blocking).
+Hardware Abstraction Layer - Serial I/O (non-blocking).
 """
 import queue
 import threading
